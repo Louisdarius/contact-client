@@ -1,0 +1,11 @@
+import { defaults } from "browserslist";
+import React from "react";
+
+const Profile = () => {
+  return (
+    <div>
+      <h3>Profile page</h3>{" "}
+    </div>
+  );
+};
+export default Profile;
