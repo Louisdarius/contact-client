@@ -1,39 +1,13 @@
 import React, { useState } from "react";
-import { Button, Input } from "antd";
 import Axios from "axios";
-import { Redirect } from "react-router-dom";
+import { Form, Input, Button, Alert } from "antd";
 
 export default function Login(props) {
-  const localUser = {
-    name: {
-      first: "louis",
-      last: "darius",
-    },
-    email: "louisdarius96@yahoo.fr",
-    contacts: [
-      {
-        name: "Joseph",
-        number: 736934876534745,
-      },
-      {
-        name: "Christian",
-        number: 990894375789387,
-      },
-      {
-        name: "Dieu-donnee",
-        number: 2538979878787,
-      },
-      {
-        name: "Ronaldo",
-        number: 38769834589,
-      },
-    ],
-  };
-  const server = "http://localhost:5000/users/login";
   const [user, setUser] = useState({
     email: "",
     password: "",
   });
+  const [error, setError] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,43 +20,74 @@ export default function Login(props) {
     });
   };
 
-  const handleLogin = (e) => {
-    // e.preventDefault();
-    localStorage.setItem("user", localUser);
-    // Axios.post(server, user)
-    //   .then((res) => console.log(res.data))
-    //   .catch((e) => console.log(e));
-    props.history.push("/contact");
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const server = "https://louis-darius-contactsapp.herokuapp.com/users/login";
+    await Axios.post(server, user)
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem("token", res.data.token);
+        props.history.push("/contact");
+        window.location.reload(); // reload after login
+      })
+      .catch((e) => {
+        setError(true);
+      });
   };
 
   return (
-    <div>
-      <h3> Login page </h3>
-      <Input
-        type="text"
-        name="email"
-        value={user.email}
-        onChange={handleChange}
-        placeholder="Email"
-      />{" "}
-      <br />
-      <br />
-      <Input.Password
-        type="password"
-        name="password"
-        value={user.password}
-        onChange={handleChange}
-        placeholder="Password"
-      />{" "}
-      <br /> <br />
-      <Button variant="secondary" onClick={handleLogin}>
-        {" "}
-        Login
-      </Button>{" "}
-      <br /> <br />
-      <p>
-        Email: {user.email} - Password: {user.password}
-      </p>
+    <div style={{ margin: 200 }}>
+      {error && (
+        <div
+          style={{
+            marginTop: 20,
+            marginBottom: 20,
+            marginLeft: 300,
+            marginRight: 300,
+          }}
+        >
+          <Alert
+            message="Error"
+            description="Wrong email or password. Please try again"
+            type="error"
+            showIcon
+          />
+        </div>
+      )}
+
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 8 }}
+        initialValues={{ remember: true }}
+      >
+        <Form.Item label="Email">
+          <Input
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            placeholder="Ex: john34@yahoo.com"
+            required
+          />
+        </Form.Item>
+
+        <Form.Item label="Password">
+          <Input.Password
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            placeholder="Password..."
+            required
+          />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+          <Button type="primary" htmlType="submit" onClick={handleLogin}>
+            Login
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }

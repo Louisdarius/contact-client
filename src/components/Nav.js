@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { withRouter } from "react-router-dom";
 import { Avatar, Menu } from "antd";
+import Axios from "axios";
 
 import {
   HomeOutlined,
@@ -11,24 +13,32 @@ import {
 } from "@ant-design/icons";
 import userEvent from "@testing-library/user-event";
 
-const user = localStorage.getItem("user");
-
 const Nav = (props) => {
   const [current, setCurrent] = useState("home");
-  const user = localStorage.getItem("user");
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleClick = (e) => {
     setCurrent(e.key);
   };
 
-  const handleSignout = (e) => {
-    localStorage.removeItem("user");
-    console.log("You have been logged out");
-    props.history.push("/home");
+  const handleSignout = async () => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    // const server = "http://localhost:5000/users/logout";
+    const server =
+      "https://louis-darius-contactsapp.herokuapp.com/users/logout";
+
+    await Axios.post(server, {}, { headers: headers })
+      .then((res) => {
+        console.log(res.data);
+        localStorage.clear();
+        props.history.push("/home");
+        window.location.reload();
+      })
+      .catch((e) => console.log(e));
   };
-  useEffect(() => {
-    console.log("You clicked the Nav");
-  }, [user]);
 
   return (
     <Menu selectedKeys={[current]} mode="horizontal">
@@ -63,10 +73,10 @@ const Nav = (props) => {
 
       {user && (
         <Menu.SubMenu key="user" icon={<SettingOutlined />} title="Setting">
-          <Menu.ItemGroup title="User name">
+          <Menu.ItemGroup title={user.name.first}>
             <Menu.Item key="profile" onClick={handleClick}>
               {" "}
-              <a href="/profile">View my profile</a>
+              <a href="/profile">Profile</a>
             </Menu.Item>
             <Menu.Item
               key="signout"
@@ -81,4 +91,4 @@ const Nav = (props) => {
     </Menu>
   );
 };
-export default Nav;
+export default withRouter(Nav);

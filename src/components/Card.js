@@ -1,16 +1,20 @@
 import React from "react";
 import { Avatar, Row, Col } from "antd";
+import { ContactsOutlined } from "@ant-design/icons";
 
 const Card = (props) => {
   return (
     <div>
-      <Row>
-        <Col span={4}>
-          {" "}
-          <Avatar />
-        </Col>
-        <Col span={20}>{props.name}</Col>
-      </Row>
+      <li>
+        {" "}
+        <span>
+          <Avatar icon={<ContactsOutlined />} />
+        </span>
+        <span>
+          {props.name}
+          {props.index}
+        </span>
+      </li>
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import { Input, Button } from "antd";
+import { Form, Input, Button } from "antd";
 import Axios from "axios";
 
 export default function Register(props) {
-  const server = "http://localhost:5000/users";
+  const { SERVER } = process.env;
   const [user, setUser] = useState({
-    first: "",
-    last: "",
+    name: {
+      first: "",
+      last: "",
+    },
     email: "",
     password: "",
   });
@@ -17,6 +19,7 @@ export default function Register(props) {
     setUser((prev) => {
       return {
         ...prev,
+        name: { ...user.name, [name]: value },
         [name]: value,
       };
     });
@@ -24,72 +27,78 @@ export default function Register(props) {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    const data = {
-      name: {
-        first: user.first,
-        last: user.last,
-      },
-      email: user.email,
-      password: user.password,
-    };
-    Axios.post(server, data)
+    // const server = "http://localhost:5000/users";
+    const server = "https://louis-darius-contactsapp.herokuapp.com/users";
+
+    Axios.post(server, user)
       .then((res) => {
-        localStorage.setItem("user", res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         localStorage.setItem("token", res.data.token);
-        props.history.push("/contacts");
+        props.history.push("/contact");
+        window.location.reload(); // reload after login
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        console.log("Sorry something went wrong");
+      });
   };
 
   return (
-    <div>
-      <h3> Register page </h3>
-      <Input
-        type="text"
-        name="first"
-        value={user.first}
-        onChange={handleChange}
-        placeholder="First Name..."
-        required
-      />{" "}
-      <br /> <br />
-      <Input
-        type="text"
-        name="last"
-        value={user.last}
-        onChange={handleChange}
-        placeholder="Last Name..."
-        required
-      />{" "}
-      <br /> <br />
-      <Input
-        type="email"
-        name="email"
-        value={user.email}
-        onChange={handleChange}
-        placeholder="Email..."
-        required
-      />{" "}
-      <br /> <br />
-      <Input.Password
-        type="password"
-        name="password"
-        value={user.password}
-        onChange={handleChange}
-        placeholder="Password..."
-        required
-      />{" "}
-      <br />
-      <br />
-      <Button variant="secondary" onClick={handleRegister}>
-        Register
-      </Button>{" "}
-      <br /> <br />
-      <p>
-        {" "}
-        First: {user.first} - Last: {user.last} - Email: {user.email} -
-        Password: {user.password}.
-      </p>
+    <div style={{ marginTop: 100, marginBottom: 100 }}>
+      <h1> Register </h1>
+
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 8 }}
+        initialValues={{ remember: true }}
+      >
+        <Form.Item label="First Name">
+          <Input
+            name="first"
+            value={user.name.first}
+            onChange={handleChange}
+            placeholder="Ex: Liam"
+            required
+          />
+        </Form.Item>
+
+        <Form.Item label="Last Name">
+          <Input
+            name="last"
+            value={user.name.last}
+            onChange={handleChange}
+            placeholder="Ex: Granham"
+            required
+          />
+        </Form.Item>
+
+        <Form.Item label="Email">
+          <Input
+            name="email"
+            value={user.email}
+            onChange={handleChange}
+            placeholder="Ex: John56@yahoo.com"
+            required
+          />
+        </Form.Item>
+
+        <Form.Item label="Password">
+          <Input.Password
+            name="password"
+            value={user.password}
+            onChange={handleChange}
+            placeholder="Password..."
+            required
+          />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+          <Button type="primary" htmlType="submit" onClick={handleRegister}>
+            Sign Up
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
