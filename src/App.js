@@ -1,5 +1,10 @@
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./pages/home";
 import Register from "./pages/register";
@@ -16,6 +21,7 @@ export default function App() {
       <Router>
         <Nav />
         <Switch>
+          <Route exact path="/" render={() => <Redirect to="/home" />} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Register} />
