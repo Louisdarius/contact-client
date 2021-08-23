@@ -92,9 +92,7 @@ function ViewContact(props) {
       .catch((e) => console.log(e));
   };
 
-  useEffect(() => {
-    getContact();
-  }, [isDisabled]);
+  useEffect(() => getContact(), [isDisabled]);
   return (
     <div style={{ marginTop: 50 }}>
       <Form

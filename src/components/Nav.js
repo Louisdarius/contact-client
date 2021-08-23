@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import { Avatar, Menu } from "antd";
+import { Menu } from "antd";
 import Axios from "axios";
 
 import {
@@ -11,7 +11,6 @@ import {
   ContactsOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import userEvent from "@testing-library/user-event";
 
 const Nav = (props) => {
   const [current, setCurrent] = useState("home");

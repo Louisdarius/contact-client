@@ -1,19 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  Row,
-  Col,
-  Button,
-  Typography,
-  Divider,
-  Card,
-  Avatar,
-  Space,
-  Input,
-} from "antd";
+import { Row, Col, Button, Divider, Card, Avatar, Space } from "antd";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import {
-  SearchOutlined,
   PlusOutlined,
   UserOutlined,
   EyeOutlined,

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Button, Input } from "antd";
+import { Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 
 const Home = () => {

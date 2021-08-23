@@ -3,7 +3,6 @@ import { Form, Input, Button } from "antd";
 import Axios from "axios";
 
 export default function Register(props) {
-  const { SERVER } = process.env;
   const [user, setUser] = useState({
     name: {
       first: "",

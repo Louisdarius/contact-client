@@ -1,11 +1,5 @@
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useHistory,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Nav from "./components/Nav";
 import Home from "./pages/home";
 import Register from "./pages/register";

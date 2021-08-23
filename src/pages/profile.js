@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
-import {
-  Row,
-  Col,
-  List,
-  Typography,
-  Statistic,
-  Divider,
-  Form,
-  Input,
-  Button,
-} from "antd";
-import { ContactsOutlined, MailOutlined } from "@ant-design/icons";
+import { Row, Col, List, Form, Input, Button } from "antd";
 import { Link } from "react-router-dom";
 
 const Profile = (props) => {
@@ -29,7 +18,6 @@ const Profile = (props) => {
     password: "",
   });
   const [isDisabled, setIsDisabled] = useState(true);
-  const { SERVER } = process.env;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
